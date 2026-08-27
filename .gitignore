@@ -3,3 +3,5 @@ dist/
 *.local
 .DS_Store
 *.log
+# lock 由各平台自行解析（Cloudflare Linux 构建缺 rollup 二进制的坑）
+package-lock.json
