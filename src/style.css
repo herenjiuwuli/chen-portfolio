@@ -1,0 +1,186 @@
+/* ============ 设计系统 v2：视差杂志 Parallax Editorial ============ */
+:root {
+  /* 纸面与油墨 */
+  --paper: #f5f0e6;            /* 暖纸底 */
+  --paper-deep: #ebe3d3;       /* 深纸底 */
+  --ink: #1a1712;              /* 近黑墨正文 */
+  --ink-70: rgba(26, 23, 18, 0.7);  /* 次要文字 */
+  --ink-50: rgba(26, 23, 18, 0.5);  /* 弱化文字 */
+  --ink-20: rgba(26, 23, 18, 0.2);  /* 细线 */
+  --ink-25: rgba(26, 23, 18, 0.25); /* 输入下划线 */
+  --brick: #b3401f;            /* 唯一强调：首字/章节号/引文/链接 */
+  --sand: #c9bba0;             /* 分隔线/次要装饰 */
+
+  /* 字体 */
+  --serif: "Fraunces", Georgia, "Songti SC", serif;
+  --body: "Fraunces", Georgia, -apple-system, "PingFang SC", "Microsoft YaHei", serif;
+  --mono: ui-monospace, Consolas, "Courier New", monospace;
+
+  --nav-h: 72px;
+  --measure: 68ch;             /* 正文测度（65-75ch） */
+}
+
+/* ============ Reset ============ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--body);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; }
+
+::selection { background: var(--brick); color: var(--paper); }
+
+/* ============ 布局工具 ============ */
+.container { max-width: 1040px; margin: 0 auto; padding: 0 28px; }
+.section { padding: 96px 0; }
+
+/* 杂志式页标题：大号衬线 + 顶部细横线 */
+.page-head { border-top: 1px solid var(--ink-20); padding-top: 20px; margin-bottom: 56px; }
+.page-title {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+.page-index {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--brick);
+  margin-bottom: 8px;
+}
+.page-sub { color: var(--ink-70); margin-top: 14px; max-width: var(--measure); }
+
+/* 章节块：大号衬线编号 + 顶部细横线 */
+.chapter { border-top: 1px solid var(--ink-20); padding-top: 22px; margin-bottom: 40px; }
+.chapter__no {
+  display: block;
+  font-family: var(--serif);
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--brick);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.chapter__title { font-family: var(--serif); font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 600; }
+.chapter__lead { color: var(--ink-70); margin-top: 10px; max-width: var(--measure); }
+
+/* 正文测度 */
+.measure { max-width: var(--measure); }
+.prose-body { max-width: var(--measure); font-size: 1.02rem; }
+
+/* ============ 按钮（杂志式：直角、墨黑底、hover 砖红） ============ */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px;
+  background: var(--ink); color: var(--paper);
+  font-family: var(--serif);
+  font-size: 1rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;               /* 印刷直角 */
+  transition: color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+}
+.btn:hover { color: var(--paper); background: var(--brick); border-color: var(--brick); transform: translateY(-2px); }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--ink-30); }
+.btn--ghost:hover { background: transparent; color: var(--brick); border-color: var(--brick); }
+
+/* ============ 导航（实底暖纸 + 细下划线，非毛玻璃） ============ */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--ink-20);
+}
+.nav__brand { font-family: var(--serif); font-weight: 600; font-size: 1.35rem; letter-spacing: 1px; }
+.nav__links { display: flex; gap: 28px; }
+.nav__link {
+  font-size: 0.95rem; color: var(--ink-70);
+  padding: 6px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s, border-color 0.25s;
+}
+.nav__link:hover, .nav__link.router-link-active { color: var(--ink); border-bottom-color: var(--brick); }
+
+/* ============ 滚动进度条（墨黑细线） ============ */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; z-index: 200;
+  height: 3px; width: 100%;
+  transform-origin: left;
+  background: var(--ink);
+  transform: scaleX(var(--progress, 0));
+}
+
+/* ============ 视差引擎 ============ */
+[data-parallax] { transform: translate3d(0, var(--pe-y, 0), 0); will-change: transform; }
+
+/* ============ Reveal 动效 ============ */
+[v-reveal] { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+[v-reveal].is-visible { opacity: 1; transform: none; }
+
+/* ============ 页脚（深纸底） ============ */
+.footer { padding: 48px 0 56px; background: var(--paper-deep); border-top: 1px solid var(--ink-20); text-align: center; color: var(--ink-70); font-size: 0.9rem; }
+.footer a { border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.footer a:hover { color: var(--brick); border-bottom-color: var(--brick); }
+
+/* ============ 文章版式（博客详情） ============ */
+.prose { max-width: var(--measure); font-size: 1.04rem; line-height: 1.75; }
+.prose p { margin: 16px 0; }
+.prose h1, .prose h2, .prose h3 { font-family: var(--serif); margin: 36px 0 14px; line-height: 1.35; }
+.prose h2 { font-size: 1.7rem; border-top: 1px solid var(--ink-20); padding-top: 18px; }
+.prose h3 { font-size: 1.3rem; }
+.prose ul, .prose ol { margin: 14px 0 14px 26px; }
+.prose li { margin: 6px 0; }
+.prose a { color: var(--brick); text-decoration: underline; text-underline-offset: 3px; }
+.prose code {
+  font-family: var(--mono); font-size: 0.88em;
+  background: var(--paper-deep); padding: 2px 7px;
+}
+.prose pre {
+  background: var(--ink); color: var(--paper);
+  padding: 20px 22px; overflow-x: auto;
+  margin: 20px 0; font-size: 0.875rem; line-height: 1.6; border-radius: 0;
+}
+.prose pre code { background: none; padding: 0; color: inherit; }
+/* 引文：大号斜体衬线 + 左侧砖红竖线 */
+.prose blockquote {
+  font-family: var(--serif); font-style: italic;
+  font-size: 1.35em; line-height: 1.5;
+  border-left: 3px solid var(--brick);
+  padding: 6px 0 6px 22px; margin: 26px 0;
+  color: var(--ink);
+}
+/* 首字下沉：砖红放大 3-4 行高 */
+.drop-cap::first-letter {
+  float: left;
+  font-family: var(--serif);
+  font-size: 3.4em;
+  line-height: 0.82;
+  padding: 5px 12px 0 0;
+  color: var(--brick);
+  font-weight: 600;
+}
+
+/* ============ Reduced Motion（归零降级） ============ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  [data-parallax] { transform: none !important; }
+  [v-reveal] { opacity: 1; transform: none; }
+  .scroll-progress { display: none; }
+}
+
+/* ============ 移动端：削弱视差 ============ */
+@media (max-width: 768px) {
+  [data-parallax] { transform: none !important; }
+  .section { padding: 64px 0; }
+}
