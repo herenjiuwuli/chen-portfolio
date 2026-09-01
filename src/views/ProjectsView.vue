@@ -6,35 +6,43 @@ import { projects } from '../data/site'
   <section class="section">
     <div class="container">
       <header class="page-head" v-reveal>
-        <span class="page-index">01 — 作品集</span>
+        <span class="label">01 — Works</span>
         <h1 class="page-title">作品</h1>
         <p class="page-sub">自己动手做过的完整项目，从练手到能跑的真实工具。</p>
       </header>
 
-      <!-- 每个作品一章：sticky 图文交错（左列钉住，右列描述滚动） -->
-      <article v-for="(p, i) in projects" :key="p.slug" class="chapter" v-reveal>
-        <span class="chapter__no">{{ String(i + 1).padStart(2, '0') }}</span>
-
-        <div class="interlock">
-          <!-- sticky 钉住列：墨黑底 + 衬线首字母 + 编号 -->
-          <div class="interlock__sticky">
-            <div class="plate" :style="{ background: p.colorDark || '#1a1712' }">
-              <span class="plate__initial">{{ p.initial }}</span>
-              <span class="plate__no">{{ String(i + 1).padStart(2, '0') }}</span>
+      <!-- 每作品一章：12 列网格，左列 sticky（编号 + 墨黑 plate），右列描述滚动 -->
+      <article v-for="(p, i) in projects" :key="p.slug" class="project" v-reveal>
+        <div class="project__grid">
+          <div class="project__sticky">
+            <span class="project__no">{{ String(i + 1).padStart(2, '0') }}</span>
+            <!-- 图片区：容器裁切 + 子元素慢速放大（Cinematic Zoom） -->
+            <div class="project__plate group">
+              <div class="project__zoom">
+                <span class="project__initial">{{ p.initial }}</span>
+              </div>
             </div>
           </div>
 
-          <!-- 滚动列：标题 + 描述 + 技术标签 -->
-          <div class="interlock__scroll">
-            <h2 class="interlock__title">{{ p.title }}</h2>
-            <p class="interlock__blurb">{{ p.blurb }}</p>
-            <div class="interlock__tech">
+          <div class="project__info">
+            <h2 class="project__title group-hover-italic">{{ p.title }}</h2>
+            <p class="project__blurb">{{ p.blurb }}</p>
+            <div class="project__tech">
               <span v-for="t in p.tech" :key="t" class="tag">{{ t }}</span>
             </div>
-            <p class="interlock__note">
-              <RouterLink :to="`/blog/${p.slug === 'mcn-data-tool' ? 'extension-scraping' : p.slug === 'ai-topic-agent' ? 'pytest-api-testing' : 'shop-recap'}`" class="interlock__link">
-                相关文章 →
-              </RouterLink>
+            <p class="project__note">
+              <RouterLink
+                v-if="p.post"
+                :to="`/blog/${p.post}`"
+                class="link-underline project__link"
+              >相关文章 →</RouterLink>
+              <a
+                v-if="p.repo"
+                :href="p.repo"
+                target="_blank"
+                rel="noopener"
+                class="link-underline project__link project__link--repo"
+              >GitHub 仓库 →</a>
             </p>
           </div>
         </div>
@@ -44,53 +52,70 @@ import { projects } from '../data/site'
 </template>
 
 <style scoped>
-.chapter { margin-bottom: 72px; }
+.project { margin-bottom: 88px; }
 
-/* sticky 图文交错：左列钉住 100vh，右列正常滚动 */
-.interlock {
+/* 12 列网格：sticky 5 列 + 内容 7 列 */
+.project__grid {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: repeat(12, 1fr);
   gap: 48px;
   align-items: start;
-  margin-top: 28px;
 }
-.interlock__sticky { position: sticky; top: calc(var(--nav-h) + 24px); }
-.plate {
-  position: relative;
-  height: min(420px, 62vh);
-  display: flex; align-items: center; justify-content: center;
-}
-.plate__initial {
+.project__sticky { grid-column: 1 / 6; position: sticky; top: calc(var(--nav-h) + 24px); }
+.project__no {
+  display: block;
   font-family: var(--serif);
-  font-size: clamp(6rem, 12vw, 9rem);
-  font-weight: 600;
-  color: var(--paper);
+  font-size: 2.6rem; font-weight: 300;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 18px;
+}
+
+/* 墨黑 plate：图片区容器（hover 边框加深 + 内层慢速放大） */
+.project__plate { border: 1px solid var(--ink-10); overflow: hidden; transition: border-color 0.4s ease; }
+.project__plate:hover { border-color: var(--ink-40); }
+.project__zoom {
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  height: min(400px, 56vh);
+  transition: transform 1s ease;
+}
+.group:hover .project__zoom { transform: scale(1.05); }
+.project__initial {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(5rem, 10vw, 7.5rem);
+  color: #f9f8f6;
   line-height: 1;
 }
-.plate__no {
-  position: absolute; bottom: 18px; right: 22px;
+
+.project__info { grid-column: 6 / 13; padding-top: 10px; }
+.project__title {
   font-family: var(--serif);
-  font-size: 1.1rem; letter-spacing: 2px;
-  color: rgba(245, 240, 230, 0.7);
+  font-weight: 400;
+  font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
 }
-.interlock__scroll { padding-top: 8px; }
-.interlock__title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 600; margin-bottom: 16px; }
-.interlock__blurb { color: var(--ink-70); max-width: var(--measure); margin-bottom: 20px; }
-.interlock__tech { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.project__blurb { color: var(--ink-60); max-width: var(--measure); margin-bottom: 24px; }
+.project__tech { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
 .tag {
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  border: 1px solid var(--ink-20);
-  padding: 3px 12px;
-  color: var(--ink-70);
+  font-size: 0.75rem; letter-spacing: 0.06em;
+  border: 1px solid var(--ink-10);
+  padding: 4px 12px;
+  color: var(--ink-60);
+  transition: border-color 0.3s ease;
 }
-.interlock__note { border-top: 1px solid var(--ink-20); padding-top: 16px; }
-.interlock__link { color: var(--brick); border-bottom: 1px solid transparent; transition: border-color 0.2s; }
-.interlock__link:hover { border-bottom-color: var(--brick); }
+.tag:hover { border-color: var(--ink-40); }
+.project__note { border-top: 1px solid var(--ink-10); padding-top: 18px; }
+.project__link { font-size: 0.9rem; margin-right: 18px; }
+.project__link--repo { color: var(--ink-60); }
+.project__link--repo:hover { color: var(--ink); }
 
 @media (max-width: 768px) {
-  .interlock { grid-template-columns: 1fr; gap: 24px; }
-  .interlock__sticky { position: static; }
-  .plate { height: 220px; }
+  .project { margin-bottom: 64px; }
+  .project__grid { grid-template-columns: 1fr; gap: 24px; }
+  .project__sticky { position: static; }
+  .project__zoom { height: 220px; }
 }
 </style>

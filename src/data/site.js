@@ -19,6 +19,7 @@ export const site = {
 }
 
 // 作品（Projects 页）—— 不放 MCN 运营案例
+// repo: GitHub 仓库链接（有则展示）；post: 关联博客 slug（有则展示「相关文章」）
 export const projects = [
   {
     slug: 'mcn-data-tool',
@@ -26,8 +27,10 @@ export const projects = [
     initial: 'M',
     color: '#7a8ca8',
     colorDark: '#5f7393',
-    blurb: '5 平台达人数据「采集 → 看板 → 飞书多维表格」全链路提效工具。分层采集架构 + 82 个自动化测试 + CI。',
+    blurb: '5 平台达人数据「采集 → 看板 → 飞书多维表格」全链路提效工具。分层采集 + 数据后端化（服务端 REST 接口）+ E2E 接入 CI，82 个单测全绿。',
     tech: ['Vue3', 'Playwright', 'Chrome 扩展', 'SQLite', '飞书 API', 'GitHub Actions'],
+    repo: 'https://github.com/herenjiuwuli/mcn-data-tool',
+    post: 'extension-scraping',
   },
   {
     slug: 'ai-topic-agent',
@@ -35,8 +38,20 @@ export const projects = [
     initial: 'AI',
     color: '#8b83b5',
     colorDark: '#6e659b',
-    blurb: '基于 DeepSeek 的 ReAct Agent：自主抓热榜 → 挑题 → 生成脚本 → 排期，5 个工具 + SSE 轨迹可视化。',
+    blurb: '基于 DeepSeek 的 ReAct Agent：自主抓热榜 → 挑题 → 生成脚本 → 排期，5 个工具 + SSE 轨迹可视化，35 个测试全绿。',
     tech: ['Vue3', 'Express', 'DeepSeek', 'Agent/ReAct', 'Vercel', 'Vitest'],
+    repo: 'https://github.com/herenjiuwuli/ai-hot-topic-assistant',
+    post: 'pytest-api-testing',
+  },
+  {
+    slug: 'api-test-platform',
+    title: 'API 自动化测试平台',
+    initial: 'AP',
+    color: '#b08b6a',
+    colorDark: '#8f6e52',
+    blurb: '面向业务的 API 自动化测试平台：Fastify + node:sqlite 存储用例，JSONPath 断言 + node-cron 定时跑，手写 HS256 JWT 鉴权，单端口部署，41 个测试全绿。',
+    tech: ['Node', 'Fastify', 'SQLite', 'JSONPath', 'node-cron', 'JWT'],
+    repo: 'https://github.com/herenjiuwuli/-api-test-platform',
   },
   {
     slug: 'acg-shop',
@@ -46,6 +61,7 @@ export const projects = [
     colorDark: '#5f7d52',
     blurb: 'Vue3 全栈练手商城：JWT 真鉴权 + 订单状态机 + mock↔真后端一键切换，配套新手向全讲解。',
     tech: ['Vue3', 'Pinia', 'Node', 'JWT', '状态机', 'Docker'],
+    post: 'shop-recap',
   },
 ]
 
