@@ -54,6 +54,16 @@ export const projects = [
     repo: 'https://github.com/herenjiuwuli/-api-test-platform',
   },
   {
+    slug: 'resume-interview',
+    title: 'AI 简历面试模拟器',
+    initial: 'R',
+    color: '#c27a72',
+    colorDark: '#a35e57',
+    blurb: '粘贴简历 → AI 评分推荐岗位 → 多轮模拟面试 → 复盘报告 → AI 生成并排版简历。岗位知识库单一数据源 + 追问上下文保留，4 套版式模板导出 PDF，24 个 pytest 接口测试全绿。',
+    tech: ['Vue3', 'Vite', 'Express5', 'DeepSeek', 'pytest', 'html2pdf'],
+    repo: 'https://github.com/herenjiuwuli/resume-interview',
+  },
+  {
     slug: 'acg-shop',
     title: '二次元商城',
     initial: 'S',
