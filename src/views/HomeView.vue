@@ -1,143 +1,105 @@
 <script setup>
-import { useTypewriter } from '../composables/useTypewriter'
-import MagneticButton from '../components/MagneticButton.vue'
 import { site } from '../data/site'
 
-const typed = useTypewriter(site.taglines)
+// 目录式入口（编辑风：编号 + 细线分隔）
+const entries = [
+  { to: '/projects', no: '01', label: '作品', hint: '3 个完整项目 · 全栈 / 测试 / Agent' },
+  { to: '/blog', no: '02', label: '博客', hint: '踩坑与复盘 · 3 篇' },
+  { to: '/about', no: '03', label: '关于', hint: '我是谁 · 在学什么' },
+]
 </script>
 
 <template>
   <section class="hero">
-    <!-- 视差背景层：超大淡字「晨」rate 0.12 + 年份 rate 0.2（前景）+ 砖红竖线 rate 0.35 -->
-    <div class="hero__bg" data-parallax="0.12" aria-hidden="true">晨</div>
-    <div class="hero__year" data-parallax="0.2" aria-hidden="true">2026</div>
-    <div class="hero__rule" data-parallax="0.35" aria-hidden="true"></div>
+    <div class="container">
+      <p class="label hero__eyebrow">Portfolio · 2026</p>
+      <h1 class="hero__title">{{ site.brand }}</h1>
+      <p class="hero__sub">{{ site.taglines[1] }}</p>
+      <p class="hero__intro measure">{{ site.intro }}</p>
 
-    <div class="container hero__inner">
-      <p class="hero__index" v-reveal>— 封面故事 · Frontend & Full-stack</p>
-      <h1 class="hero__title" v-reveal>{{ site.brand }}</h1>
-      <p class="hero__typed" v-reveal>
-        <span class="typed-text">{{ typed }}</span><span class="caret">▍</span>
-      </p>
-      <p class="hero__intro measure" v-reveal>{{ site.intro }}</p>
-
-      <div class="hero__cta" v-reveal>
-        <MagneticButton :href="site.resume" :external="true">查看简历 ↓</MagneticButton>
-        <MagneticButton :href="site.github" :external="true" ghost>GitHub</MagneticButton>
+      <div class="hero__cta">
+        <a class="btn" :href="site.resume">查看简历</a>
+        <a class="btn btn--ghost" :href="site.github" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
     </div>
 
-    <!-- 杂志目录式入口：章节编号 + 顶部细横线 -->
+    <!-- 编辑风目录：编号 + border 分隔线（hover /10→/40）+ 标题斜体 + 箭头右移 -->
     <div class="container hero__entries">
-      <RouterLink to="/projects" class="entry" v-reveal>
-        <span class="entry__no">01</span>
+      <RouterLink
+        v-for="(e, i) in entries"
+        :key="e.no"
+        :to="e.to"
+        class="entry group"
+        v-reveal
+        :style="{ transitionDelay: `${i * 90}ms` }"
+      >
+        <span class="entry__no">{{ e.no }}</span>
         <div class="entry__body">
-          <span class="entry__label">作品</span>
-          <span class="entry__hint">3 个项目 · 全栈 / 测试 / Agent</span>
+          <span class="entry__label group-hover-italic">{{ e.label }}</span>
+          <span class="entry__hint">{{ e.hint }}</span>
         </div>
-      </RouterLink>
-      <RouterLink to="/blog" class="entry" v-reveal :style="{ transitionDelay: '90ms' }">
-        <span class="entry__no">02</span>
-        <div class="entry__body">
-          <span class="entry__label">博客</span>
-          <span class="entry__hint">踩坑与复盘 · 3 篇</span>
-        </div>
-      </RouterLink>
-      <RouterLink to="/about" class="entry" v-reveal :style="{ transitionDelay: '180ms' }">
-        <span class="entry__no">03</span>
-        <div class="entry__body">
-          <span class="entry__label">关于</span>
-          <span class="entry__hint">我是谁 · 在学什么</span>
-        </div>
+        <span class="entry__arrow group-arrow">→</span>
       </RouterLink>
     </div>
   </section>
 </template>
 
 <style scoped>
-.hero {
-  position: relative;
-  min-height: calc(100vh - var(--nav-h));
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 72px 0 56px;
-  overflow: hidden;
-}
-/* 视差背景层（transform-only，rate 0.12 慢） */
-.hero__bg {
-  position: absolute; top: 6%; right: 2%;
-  font-family: var(--serif);
-  font-size: clamp(14rem, 34vw, 30rem);
-  font-weight: 300;
-  color: transparent;
-  -webkit-text-stroke: 1px var(--ink-20);
-  line-height: 1;
-  pointer-events: none;
-  user-select: none;
-}
-.hero__year {
-  position: absolute; bottom: 14%; left: 4%;
-  font-family: var(--serif);
-  font-size: clamp(6rem, 16vw, 12rem);
-  color: var(--ink-20);
-  line-height: 1;
-  pointer-events: none;
-  user-select: none;
-}
-.hero__rule {
-  position: absolute; top: 0; bottom: 0; left: 34%;
-  width: 2px;
-  background: var(--brick);
-  opacity: 0.35;
-  pointer-events: none;
-}
-.hero__inner { position: relative; z-index: 1; }
-.hero__index {
-  font-family: var(--serif);
-  color: var(--brick);
-  font-size: 0.95rem;
-  letter-spacing: 2px;
-  margin-bottom: 16px;
-}
+.hero { padding: 120px 0 80px; }
+
+.hero__eyebrow { margin-bottom: 26px; }
 .hero__title {
   font-family: var(--serif);
-  font-size: clamp(5rem, 18vw, 11rem);
-  font-weight: 600;
-  line-height: 0.95;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
+  font-weight: 400;
+  font-size: clamp(4.5rem, 14vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  margin-bottom: 30px;
 }
-.hero__typed {
-  font-size: clamp(1.05rem, 2.4vw, 1.4rem);
-  color: var(--ink-70);
-  min-height: 2em; margin-bottom: 28px;
+.hero__sub {
   font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+  color: var(--ink-60);
+  margin-bottom: 34px;
 }
-.caret { animation: blink 1s steps(1) infinite; color: var(--brick); }
-@keyframes blink { 50% { opacity: 0; } }
+.hero__intro { color: var(--ink-60); margin-bottom: 46px; }
 
-.hero__intro { font-size: 1.02rem; margin-bottom: 40px; }
+.hero__cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 100px; }
 
-.hero__cta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 64px; }
-
-/* 目录式入口：border-t 细线 + 衬线编号，hover 砖红 */
-.hero__entries { position: relative; z-index: 1; display: flex; flex-direction: column; max-width: 640px; }
+/* 目录式入口：编号 + border 分隔 + group 交互 */
+.hero__entries { max-width: 700px; }
 .entry {
-  display: flex; align-items: center; gap: 22px;
-  border-top: 1px solid var(--ink-20);
-  padding: 18px 4px;
-  transition: color 0.25s ease;
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 22px; align-items: center;
+  border-top: 1px solid var(--ink-10);
+  padding: 26px 4px;
+  transition: border-color 0.4s ease;
 }
-.entry:last-child { border-bottom: 1px solid var(--ink-20); }
-.entry:hover .entry__no { color: var(--brick); }
+.entry:last-child { border-bottom: 1px solid var(--ink-10); }
+.entry:hover { border-top-color: var(--ink-40); }
+.entry:last-child:hover { border-bottom-color: var(--ink-40); }
+
 .entry__no {
   font-family: var(--serif);
-  font-size: 1.6rem; font-weight: 300;
-  color: var(--ink-50);
-  transition: color 0.25s ease;
-  min-width: 52px;
+  font-size: 1.4rem; font-weight: 300;
+  color: var(--ink-40);
+  transition: color 0.4s ease;
 }
-.entry__body { display: flex; flex-direction: column; gap: 2px; }
-.entry__label { font-family: var(--serif); font-size: 1.35rem; transition: color 0.25s ease; }
-.entry:hover .entry__label { color: var(--brick); }
-.entry__hint { font-size: 0.88rem; color: var(--ink-70); }
+.entry:hover .entry__no { color: var(--ink); }
+
+.entry__label {
+  font-family: var(--serif);
+  font-size: 1.35rem; font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.entry__hint { font-size: 0.85rem; color: var(--ink-60); margin-top: 3px; }
+.entry__arrow { font-size: 1.1rem; color: var(--ink-40); }
+
+@media (max-width: 768px) {
+  .hero { padding: 80px 0 56px; }
+  .entry { grid-template-columns: 44px 1fr auto; gap: 14px; padding: 20px 2px; }
+}
 </style>

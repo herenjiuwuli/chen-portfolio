@@ -40,10 +40,10 @@ const html = computed(() => {
 <template>
   <section class="section">
     <div class="container post" v-if="post">
-      <RouterLink to="/blog" class="post__back">← 返回专栏</RouterLink>
+      <RouterLink to="/blog" class="link-underline post__back">← 返回专栏</RouterLink>
 
       <header class="post__head">
-        <span class="post__index">02 — 专栏</span>
+        <span class="label">02 — Journal</span>
         <h1 class="post__title" v-reveal>{{ post.title }}</h1>
         <div class="post__meta">
           <span class="post__date">{{ post.date }}</span>
@@ -51,41 +51,56 @@ const html = computed(() => {
         </div>
       </header>
 
-      <!-- 文章正文：首字下沉（drop cap 砖红）+ 引文砖红竖线 + 68ch 测度 -->
+      <!-- 文章正文：drop cap 墨黑首字 + 斜体衬线引文（无竖线）+ 68ch 无衬线正文 -->
       <article class="prose drop-cap" v-html="html"></article>
 
       <footer class="post__end">
-        <RouterLink to="/blog" class="post__back">← 返回专栏</RouterLink>
+        <RouterLink to="/blog" class="link-underline post__back">← 返回专栏</RouterLink>
         <p class="post__sign">— {{ post.date }} · 晨</p>
       </footer>
     </div>
     <div class="container" v-else>
       <h1 class="page-title">文章不存在</h1>
-      <RouterLink to="/blog" class="post__back">← 返回专栏</RouterLink>
+      <RouterLink to="/blog" class="link-underline post__back">← 返回专栏</RouterLink>
     </div>
   </section>
 </template>
 
 <style scoped>
-.post { max-width: 760px; }
+.post { max-width: 820px; }
 .post__back {
-  display: inline-block; color: var(--ink-70); font-size: 0.9rem;
-  margin-bottom: 24px; transition: color 0.2s;
+  display: inline-block;
+  color: var(--ink-60);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 40px;
+  transition: color 0.25s ease;
 }
-.post__back:hover { color: var(--brick); }
+.post__back:hover { color: var(--ink); }
 
-.post__head { border-top: 1px solid var(--ink-20); padding-top: 20px; margin-bottom: 36px; }
-.post__index { font-family: var(--serif); color: var(--brick); font-size: 0.95rem; letter-spacing: 2px; }
+.post__head { border-top: 1px solid var(--ink-10); padding-top: 24px; margin-bottom: 48px; }
 .post__title {
   font-family: var(--serif);
-  font-size: clamp(1.7rem, 4.5vw, 2.6rem);
-  font-weight: 600; line-height: 1.3;
-  margin: 10px 0 16px;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 4.5vw, 3rem);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  margin: 14px 0 20px;
 }
 .post__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.post__date { font-family: var(--mono); font-size: 0.85rem; color: var(--ink-50); }
-.post__tag { font-size: 0.78rem; border: 1px solid var(--ink-20); padding: 2px 12px; color: var(--ink-70); }
+.post__date { font-size: 0.78rem; color: var(--ink-40); }
+.post__tag {
+  font-size: 0.72rem; letter-spacing: 0.08em;
+  border: 1px solid var(--ink-10);
+  padding: 2px 10px;
+  color: var(--ink-60);
+}
 
-.post__end { margin-top: 48px; border-top: 1px solid var(--ink-20); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
-.post__sign { font-family: var(--serif); color: var(--ink-50); font-size: 0.9rem; }
+.post__end {
+  margin-top: 56px;
+  border-top: 1px solid var(--ink-10);
+  padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.post__sign { font-family: var(--serif); font-weight: 400; color: var(--ink-40); font-size: 0.9rem; }
 </style>

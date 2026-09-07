@@ -1,6 +1,5 @@
 <script setup>
 import { useCountUp } from '../composables/useCountUp'
-import MagneticButton from '../components/MagneticButton.vue'
 import { site } from '../data/site'
 
 const projectCount = useCountUp(3)
@@ -21,7 +20,7 @@ const skills = [
   <section class="section">
     <div class="container">
       <header class="page-head" v-reveal>
-        <span class="page-index">03 — 自述</span>
+        <span class="label">03 — About</span>
         <h1 class="page-title">关于</h1>
         <p class="page-sub">一个想把重复劳动写成工具的前端学习者。</p>
       </header>
@@ -88,9 +87,9 @@ const skills = [
           <div>
             <p class="measure">欢迎交流前端、测试、数据相关的话题，也接受简历建议。</p>
             <div class="about__btns">
-              <MagneticButton :href="`mailto:${site.email}`">发邮件：{{ site.email }}</MagneticButton>
-              <MagneticButton :href="site.github" :external="true" ghost>GitHub：herenjiuwuli</MagneticButton>
-              <MagneticButton :href="site.resume" :external="true" ghost>下载简历</MagneticButton>
+              <a class="btn" :href="`mailto:${site.email}`">发邮件：{{ site.email }}</a>
+              <a class="btn btn--ghost" :href="site.github" target="_blank" rel="noopener noreferrer">GitHub：herenjiuwuli</a>
+              <a class="btn btn--ghost" :href="site.resume">下载简历</a>
             </div>
           </div>
         </div>
@@ -100,32 +99,40 @@ const skills = [
 </template>
 
 <style scoped>
-.chapter { margin-bottom: 56px; }
+.chapter { margin-bottom: 72px; }
 .chapter__grid {
   display: grid;
   grid-template-columns: 220px 1fr;
-  gap: 40px;
-  margin-top: 26px;
+  gap: 48px;
+  margin-top: 30px;
 }
-.chapter__body p { margin-bottom: 12px; color: var(--ink-70); }
+.chapter__body p { margin-bottom: 12px; color: var(--ink-60); }
 
-.stats { display: flex; gap: 44px; flex-wrap: wrap; padding-top: 4px; }
+.stats { display: flex; gap: 48px; flex-wrap: wrap; padding-top: 4px; }
 .stat { display: flex; flex-direction: column; }
-.stat__num { font-family: var(--serif); font-size: 2.6rem; font-weight: 300; color: var(--brick); }
-.stat__label { font-size: 0.9rem; color: var(--ink-70); }
+.stat__num {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 2.8rem;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.stat__label { font-size: 0.9rem; color: var(--ink-60); }
 
 .skills { list-style: none; }
 .skill {
   display: flex; justify-content: space-between; align-items: baseline;
-  border-bottom: 1px solid var(--ink-20);
-  padding: 14px 2px;
+  border-bottom: 1px solid var(--ink-10);
+  padding: 16px 2px;
 }
-.skill__name { font-family: var(--serif); font-size: 1.05rem; }
-.skill__level { color: var(--ink-70); font-size: 0.88rem; }
+.skill__name { font-family: var(--serif); font-weight: 400; font-size: 1.05rem; }
+.skill__level { color: var(--ink-60); font-size: 0.88rem; }
 
-.about__btns { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
+.about__btns { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 26px; }
 
 @media (max-width: 768px) {
-  .chapter__grid { grid-template-columns: 1fr; gap: 18px; }
+  .chapter { margin-bottom: 56px; }
+  .chapter__grid { grid-template-columns: 1fr; gap: 20px; }
 }
 </style>
