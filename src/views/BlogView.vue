@@ -5,6 +5,7 @@ import { posts } from '../data/site'
 <template>
   <section class="section">
     <div class="container">
+      <RouterLink to="/" class="back">← 返回首页</RouterLink>
       <header class="page-head" v-reveal>
         <span class="label">02 — Journal</span>
         <h1 class="page-title">博客</h1>

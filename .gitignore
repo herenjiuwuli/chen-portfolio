@@ -7,3 +7,6 @@ dist.*/
 *.log
 # lock 由各平台自行解析（Cloudflare Linux 构建缺 rollup 二进制的坑）
 package-lock.json
+# 单文件发布快照：由 preview/mishano-motion-prototype.html 复制而来，
+# 进仓库就会出现「两份会各自变旧」的坑，所以不入库
+deploy/

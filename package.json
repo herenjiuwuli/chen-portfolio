@@ -5,7 +5,8 @@
   "type": "module",
   "description": "求职作品集「晨」—— Vue3 + Vite + hash 路由 + marked",
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/dev-clean.mjs",
+    "dev:raw": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },

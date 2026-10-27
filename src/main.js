@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import { vReveal } from './composables/useReveal'
 import './style.css'
+// 主站样式（须在 style.css 之后加载：body / ::selection 由它接管）
+import './styles/mishano.css'
 
 const app = createApp(App)
 

@@ -1,77 +1,101 @@
-// ============ 唯一数据源：个人信息 / 作品 / 博客元数据 ============
+// ============ 唯一数据源：个人信息 / 作品 / 工作方式 / 博客元数据 ============
+// 改文案只改这里，别去改 HomeView.vue 的模板结构。
 
 export const site = {
-  brand: '晨',
-  // 打字机逐句播放（Home 页）
-  taglines: [
-    '前端方向在读 · 实习 MCN 数据运营',
-    '把重复劳动写成工具',
-    '正在认真冲全栈',
-  ],
-  intro:
-    '你好，我是「晨」。前端方向在读，目前在 MCN 机构做数据运营实习，' +
-    '日常和 5 个平台的达人数据打交道。为了偷懒，我把手动抄数做成了工具；' +
-    '为了证明自己，我又把工具做成了一整条测试流水线。这个站点记录我的作品和踩坑。',
+  name: '周怡晨',
+  brand: 'yichen',
+  eyebrow: 'PORTFOLIO 2026 — 测试开发 / 全栈开发 · 深圳',
+  lede: '写<em>被测试的系统</em>，也写<em>测试它的平台</em>：四组项目、五套系统，近 700 条自动化测试，覆盖接口断言、UI 真机与跨模块一致性对账。',
+  lede2: '从数据库表、接口鉴权到单端口部署与 CI 流水线，端到端自己跑通。',
   github: 'https://github.com/herenjiuwuli',
-  email: 'gerocery@qq.com',
-  resume: './resume.pdf',
-  location: '中国',
+  email: '2932221535@qq.com',
+  city: '深圳',
+  track: '测试开发 / 全栈开发',
+  status: '可到岗',
+  cta: '目前在看测试开发、全栈开发方向的机会，深圳可到岗。作品集的每个项目都能现场跑起来，测试数据与失败案例也可以直接演示。',
 }
 
-// 作品（Projects 页）—— 不放 MCN 运营案例
-// repo: GitHub 仓库链接（有则展示）；post: 关联博客 slug（有则展示「相关文章」）
-export const projects = [
+// 作品：首页横向滑轨的四屏
+// links: [{ label, href }]；meta: [{ b: 主信息, rest: 补充 }]
+export const works = [
   {
-    slug: 'mcn-data-tool',
-    title: 'MCN 数据工具',
-    initial: 'M',
-    color: '#7a8ca8',
-    colorDark: '#5f7393',
-    blurb: '5 平台达人数据「采集 → 看板 → 飞书多维表格」全链路提效工具。分层采集 + 数据后端化（服务端 REST 接口）+ E2E 接入 CI，90+ 个单测全绿。',
-    tech: ['Vue3', 'Playwright', 'Chrome 扩展', 'SQLite', '飞书 API', 'GitHub Actions'],
-    repo: 'https://github.com/herenjiuwuli/mcn-data-tool',
-    post: 'extension-scraping',
-  },
-  {
-    slug: 'ai-topic-agent',
-    title: 'AI 热点选题助手',
-    initial: 'AI',
-    color: '#8b83b5',
-    colorDark: '#6e659b',
-    blurb: '基于 DeepSeek 的 ReAct Agent：自主抓热榜 → 挑题 → 生成脚本 → 排期，6 个工具 + RAG 知识库 + SSE 轨迹可视化，39 例单测全绿。',
-    tech: ['Vue3', 'Express', 'DeepSeek', 'Agent/ReAct', 'Vercel', 'Vitest'],
-    repo: 'https://github.com/herenjiuwuli/ai-hot-topic-assistant',
-    post: 'pytest-api-testing',
-  },
-  {
-    slug: 'api-test-platform',
+    no: '01',
     title: 'API 自动化测试平台',
-    initial: 'AP',
-    color: '#b08b6a',
-    colorDark: '#8f6e52',
-    blurb: '面向业务的 API 自动化测试平台：Fastify + node:sqlite 存储用例，JSONPath 断言 + node-cron 定时跑，手写 HS256 JWT 鉴权，AI 生成用例模块，单端口部署，51 个测试全绿。',
-    tech: ['Node', 'Fastify', 'SQLite', 'JSONPath', 'node-cron', 'JWT'],
-    repo: 'https://github.com/herenjiuwuli/-api-test-platform',
+    sub: '+ 办公 OA 闭环',
+    desc: '自研接口测试平台：存用例 → 手动/定时跑 → 多维断言 → 出报告。为了证明它真的好用，我又写了一套办公 OA 当被测系统，用平台把它测穿。',
+    links: [
+      { label: '平台源码', href: 'https://github.com/herenjiuwuli/api-test-platform' },
+      { label: '被测系统', href: 'https://github.com/herenjiuwuli/office-oa' },
+    ],
+    meta: [
+      { b: '211 单测 · 11 E2E', rest: 'Fastify 5 · node:sqlite' },
+      { b: '84/84 闭环', rest: 'Vue3 · 手写 JWT' },
+      { b: 'Docker 单端口', rest: 'CI 五层流水线' },
+    ],
   },
   {
-    slug: 'job-hunter',
+    no: '02',
+    title: 'AI 热点选题助手',
+    sub: 'ReAct Agent + RAG',
+    desc: '工具调用 Agent + 自建 RAG 知识库（智谱 embedding + 自写余弦检索），从热榜拉取到选题建议全链路，已上线可访问。',
+    links: [
+      { label: '线上演示', href: 'https://ai-hot-topic-assistant.vercel.app' },
+      { label: '源码', href: 'https://github.com/herenjiuwuli/ai-hot-topic-assistant' },
+    ],
+    meta: [
+      { b: '37 单测', rest: 'ReAct · RAG' },
+      { b: '1024 维向量', rest: '智谱 embedding-2' },
+      { b: '已上线', rest: 'Vue3' },
+    ],
+  },
+  {
+    no: '03',
+    title: 'MCN 数据工具',
+    sub: '真实业务里长出来的',
+    desc: '5 平台数据采集 → 结构化存储 → 分析看板 → 飞书同步。实习期间每天在用，替代逐条手动复制统计。',
+    links: [{ label: '源码', href: 'https://github.com/herenjiuwuli/mcn-data-tool' }],
+    meta: [
+      { b: '82 单测', rest: 'Chrome MV3 · ECharts' },
+      { b: '5 平台采集', rest: '抖音 / 小红书 / B站…' },
+      { b: '飞书 Webhook', rest: 'Playwright 定时' },
+    ],
+  },
+  {
+    no: '04',
     title: '求职助手',
-    initial: 'J',
-    color: '#4f46e5',
-    colorDark: '#4338ca',
-    blurb: '把「做简历、投简历、面面试」串成一条可追踪流水线：简历库唯一数据源 + 按 JD 定制 + 匹配排序 + Chrome 半自动投递扩展（防封策略）+ AI 模拟面试，46 个 pytest 用例全绿。',
-    tech: ['Vue3', 'Express5', 'DeepSeek', 'Chrome MV3', 'pytest', 'Vite'],
-    repo: 'https://github.com/herenjiuwuli/job-hunter',
+    sub: 'JobHunter — 把求职做成流水线',
+    desc: '简历库、按 JD 定制、匹配打分、投递状态机、AI 模拟面试 —— 把「做简历 / 投简历 / 面试」串成一条可追踪的链。',
+    links: [{ label: '源码', href: 'https://github.com/herenjiuwuli/job-hunter' }],
+    meta: [
+      { b: '61 pytest', rest: 'Vue3 · Express 5' },
+      { b: '7 状态流转', rest: '+ 5 结果机' },
+      { b: 'DeepSeek', rest: 'PDF 导出 · MV3 扩展' },
+    ],
+  },
+]
+
+// 工作方式：三张叠层卡（h 为两行标题）
+export const capabilities = [
+  {
+    no: '01',
+    tag: '测试开发 · 效率改造',
+    h: ['把「手动重复」', '变成工具'],
+    note: '实习时每天手动点接口验采集脚本，于是把这件事造成一个平台：存用例、定时跑、出报告。习惯先问「这活为什么需要人来做」，再动手写。',
+    stack: 'Fastify · node:sqlite · node-cron · SSE',
   },
   {
-    slug: 'acg-shop',
-    title: '二次元商城',
-    initial: 'S',
-    color: '#7c9a6d',
-    colorDark: '#5f7d52',
-    blurb: 'Vue3 全栈练手商城：JWT 真鉴权 + 订单状态机 + mock↔真后端一键切换，配套新手向全讲解。',
-    tech: ['Vue3', 'Pinia', 'Node', 'JWT', '状态机', 'Docker'],
-    post: 'shop-recap',
+    no: '02',
+    tag: '质量意识 · 一致性验证',
+    h: ['不只写功能，', '还写它的证据'],
+    note: '每个项目都配自动化测试与跨模块对账：列表 ↔ 导出 ↔ 统计 ↔ 通知必须自洽。全绿不等于没问题 —— 这是踩过坑之后才有的判断。',
+    stack: 'Vitest · Playwright · 一致性对账 · 真机取证',
+  },
+  {
+    no: '03',
+    tag: '全栈 · 部署 · CI',
+    h: ['端到端把东西', '跑起来'],
+    note: '从数据库表、接口鉴权、前端组件，到 Docker 单端口部署、CI 五层流水线 —— 不需要别人接手才能上线。',
+    stack: 'Vue3 · JWT · Docker · GitHub Actions',
   },
 ]
 

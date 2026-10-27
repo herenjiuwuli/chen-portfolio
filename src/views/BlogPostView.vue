@@ -56,7 +56,7 @@ const html = computed(() => {
 
       <footer class="post__end">
         <RouterLink to="/blog" class="link-underline post__back">← 返回专栏</RouterLink>
-        <p class="post__sign">— {{ post.date }} · 晨</p>
+        <p class="post__sign">— {{ post.date }} · 周怡晨</p>
       </footer>
     </div>
     <div class="container" v-else>
